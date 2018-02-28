@@ -66,11 +66,13 @@ class App extends React.Component {
     }
   }
 
-  logout() {
-    //console.log("logout")
+  logout = () => {
     window.localStorage.clear()
 
-    this.setState({ message: `Logged out successfully` })
+    this.setState({ message: `Logged out successfully`, 
+                    username: '',
+                    password: '',
+                    user: null, })
     setTimeout(() => {
       this.setState({ message: null })
     }, 5000)
@@ -91,6 +93,11 @@ class App extends React.Component {
         title: '',
         url: ''
       })
+
+      this.setState({ message: `${newBlog.title} created successfully` })
+      setTimeout(() => {
+        this.setState({ message: null })
+      }, 5000)
 
     }
     catch (error) {
