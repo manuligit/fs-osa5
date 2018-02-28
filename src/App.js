@@ -2,6 +2,7 @@ import React from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import CreateBlogForm from './components/CreateBlogForm'
 
 class App extends React.Component {
   constructor(props) {
@@ -10,7 +11,10 @@ class App extends React.Component {
       blogs: [],
       username: '',
       password: '',
-      user: null
+      user: null,
+      title: '',
+      author: '',
+      url: ''
     }
   }
 
@@ -27,7 +31,7 @@ class App extends React.Component {
     }
   } 
 
-  handleLoginFieldChange = (event) => {
+  handleFormFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
@@ -57,6 +61,28 @@ class App extends React.Component {
     window.localStorage.clear()
   }
 
+  createBlog = (event) => {
+    event.preventDefault()
+    console.log("creating a blog", this.state.title)
+    let newBlog = {
+      title: this.state.title,
+      author: this.state.author,
+      url: this.state.url
+    }
+    try { 
+      blogService.create(newBlog)
+      this.setState({ 
+        author: '',
+        title: '',
+        url: ''
+      })
+
+    }
+    catch (error) {
+      console.log(error.name)
+    }
+    //console.log(response.data)
+  }
 
   render() {
     const loginForm = () => (
@@ -68,7 +94,7 @@ class App extends React.Component {
               type="text" 
               name="username"
               value={this.state.username}
-              onChange={this.handleLoginFieldChange}
+              onChange={this.handleFormFieldChange}
             />
           </div>
           <div> Password
@@ -76,7 +102,7 @@ class App extends React.Component {
               type="text"
               name="password"
               value={this.state.password}
-              onChange={this.handleLoginFieldChange}
+              onChange={this.handleFormFieldChange}
               />
           </div>
           <button type="submit">Kirjaudu</button>
@@ -101,6 +127,10 @@ class App extends React.Component {
         {this.state.user === null && loginForm()}
 
         {this.state.user !== null && blogList()}
+
+        <CreateBlogForm title={this.state.title} author={this.state.author} url={this.state.url} 
+                        createBlog={this.createBlog.bind(this)} 
+                        handleFormFieldChange={this.handleFormFieldChange.bind(this)} />
       </div>
     );
   }
