@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import CreateBlogForm from './components/CreateBlogForm'
+import Notification from './components/Notification'
+import './index.css'
 
 class App extends React.Component {
   constructor(props) {
@@ -14,7 +16,8 @@ class App extends React.Component {
       user: null,
       title: '',
       author: '',
-      url: ''
+      url: '',
+      message: null
     }
   }
 
@@ -46,12 +49,19 @@ class App extends React.Component {
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       this.setState({ username: '', password: '', user})
+
+      this.setState({ message: `Logged in successfully` })
+      setTimeout(() => {
+        this.setState({ message: null })
+      }, 5000)
+
+
     } catch(exception) {
       this.setState({
-        error: 'käyttäjätunnus tai salasana virheellinen',
+        message: 'Wrong username or password',
       })
       setTimeout(() => {
-        this.setState({ error: null })
+        this.setState({ message: null })
       }, 5000)
     }
   }
@@ -59,6 +69,11 @@ class App extends React.Component {
   logout() {
     //console.log("logout")
     window.localStorage.clear()
+
+    this.setState({ message: `Logged out successfully` })
+    setTimeout(() => {
+      this.setState({ message: null })
+    }, 5000)
   }
 
   createBlog = (event) => {
@@ -119,18 +134,19 @@ class App extends React.Component {
         {this.state.blogs.map(blog => 
           <Blog key={blog._id} blog={blog}/>
         )}
+
+        <CreateBlogForm title={this.state.title} author={this.state.author} url={this.state.url} 
+                createBlog={this.createBlog.bind(this)} 
+                handleFormFieldChange={this.handleFormFieldChange.bind(this)} />
       </div>
     )
 
     return (
       <div>
+        <Notification message={this.state.message} />
         {this.state.user === null && loginForm()}
 
         {this.state.user !== null && blogList()}
-
-        <CreateBlogForm title={this.state.title} author={this.state.author} url={this.state.url} 
-                        createBlog={this.createBlog.bind(this)} 
-                        handleFormFieldChange={this.handleFormFieldChange.bind(this)} />
       </div>
     );
   }
