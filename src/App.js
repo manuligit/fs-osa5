@@ -5,6 +5,7 @@ import loginService from './services/login'
 import CreateBlogForm from './components/CreateBlogForm'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 import './index.css'
 
 class App extends React.Component {
@@ -130,18 +131,12 @@ class App extends React.Component {
       const showWhenVisible = { display: this.state.loginVisible ? '' : 'none' }
 
       return (
-        <div>
-          <div style={hideWhenVisible}>
-            <button onClick={e => this.setState({ loginVisible: true })}>Login</button>
-          </div>
-          <div style={showWhenVisible}>
+        <Togglable buttonLabel="Login">
             <LoginForm login={this.login} 
                        username={this.state.username}
                        handleFormFieldChange={this.handleFormFieldChange} 
                        password={this.state.password}/>
-            <button onClick={e => this.setState({ loginVisible: false })}>Cancel</button>
-          </div>
-        </div>
+        </Togglable>
       )
 
     }

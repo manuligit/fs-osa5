@@ -1,8 +1,10 @@
+import React from 'react'
+
 class Togglable extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      visible: trues
+      visible: true
     }
   }
 
@@ -27,3 +29,5 @@ class Togglable extends React.Component {
     )
   }
 }
+
+export default Togglable
