@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import CreateBlogForm from './components/CreateBlogForm'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
 import './index.css'
 
 class App extends React.Component {
@@ -17,7 +18,8 @@ class App extends React.Component {
       title: '',
       author: '',
       url: '',
-      message: null
+      message: null,
+      loginVisible: false
     }
   }
 
@@ -107,31 +109,6 @@ class App extends React.Component {
   }
 
   render() {
-    const loginForm = () => (
-      <div>
-        <h2>Login to application</h2>
-        <form onSubmit={this.login}>
-          <div> Username
-            <input 
-              type="text" 
-              name="username"
-              value={this.state.username}
-              onChange={this.handleFormFieldChange}
-            />
-          </div>
-          <div> Password
-            <input 
-              type="text"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleFormFieldChange}
-              />
-          </div>
-          <button type="submit">Kirjaudu</button>
-        </form>
-      </div>
-    )
-
     const blogList = () => (
       <div>
         <h2>blogs</h2>
@@ -148,10 +125,30 @@ class App extends React.Component {
       </div>
     )
 
+    const loginForm = () => {
+      const hideWhenVisible = { display: this.state.loginVisible ? 'none' : '' }
+      const showWhenVisible = { display: this.state.loginVisible ? '' : 'none' }
+
+      return (
+        <div>
+          <div style={hideWhenVisible}>
+            <button onClick={e => this.setState({ loginVisible: true })}>Login</button>
+          </div>
+          <div style={showWhenVisible}>
+            <LoginForm login={this.login} 
+                       username={this.state.username}
+                       handleFormFieldChange={this.handleFormFieldChange} 
+                       password={this.state.password}/>
+            <button onClick={e => this.setState({ loginVisible: false })}>Cancel</button>
+          </div>
+        </div>
+      )
+
+    }
     return (
       <div>
         <Notification message={this.state.message} />
-        {this.state.user === null && loginForm()}
+        {this.state.user === null && loginForm() }
 
         {this.state.user !== null && blogList()}
       </div>
