@@ -92,7 +92,8 @@ class App extends React.Component {
     }
     try { 
       blogService.create(newBlog)
-      let blogs = this.state.blogs.concat(newBlog)
+      let blogs = this.state.blogs.concat({...newBlog, likes: 0})
+      
       this.setState({ 
         author: '',
         title: '',
@@ -118,6 +119,7 @@ class App extends React.Component {
       //get the original blog object
       let blog = await blogService.getOne(id)
       //copy it to add one to it's likes
+      console.log(blog.likes)
       const addedLike = {...blog, likes: blog.likes+1}
       //update the object and blog list
       await blogService.update(id, addedLike)
@@ -135,9 +137,13 @@ class App extends React.Component {
     }
   }
 
-  deleteBlog() {
+  deleteBlog = (event) => {
     //delete blog lul
-    console.log("deleting")
+    const id = event.target.value
+    console.log("deleting", id)
+
+
+
   }
 
   render() {
