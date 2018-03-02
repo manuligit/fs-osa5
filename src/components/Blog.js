@@ -20,11 +20,8 @@ class Blog extends React.Component {
       borderWidth: 1,
       marginBottom: 5
     }
-    if (!this.props.blog.user) { 
-      return ( null )
-    }
-    //check for user just in case
-    if (this.props.blog.user) { 
+    //if no user, anyone can delete
+    if (!this.props.blog.user) {
       if (this.state.selected) {
         return (
           <div style={blogStyle}>
@@ -33,11 +30,39 @@ class Blog extends React.Component {
               <a href={this.props.blog.url}>{this.props.blog.url}</a><br/>
             {this.props.blog.likes} likes 
             <button onClick={this.props.like} value={this.props.blog.id}>like</button><br/>
-            Added by {this.props.blog.user.name}
+            Added by unknown <button onClick={this.props.delete} value={this.props.blog.id}>delete</button><br/>
         </div>
         )
       }
-    }
+    } else {
+      if (this.state.selected) {
+        //if the user is same as blogs adder, show the delete button:
+        //use usernames because they are unique
+        if (this.props.blog.user.username === this.props.currentUser) {
+          return (
+            <div style={blogStyle}>
+              <div onClick={this.toggleSelected}>
+                {this.props.blog.title} by {this.props.blog.author} </div>
+                <a href={this.props.blog.url}>{this.props.blog.url}</a><br/>
+              {this.props.blog.likes} likes 
+              <button onClick={this.props.like} value={this.props.blog.id}>like</button><br/>
+              Added by {this.props.blog.user.name} <button onClick={this.props.delete} value={this.props.blog.id}>delete</button><br/>
+            </div>
+          )
+        }
+
+        return (
+          <div style={blogStyle}>
+            <div onClick={this.toggleSelected}>
+              {this.props.blog.title} by {this.props.blog.author} </div>
+              <a href={this.props.blog.url}>{this.props.blog.url}</a><br/>
+            {this.props.blog.likes} likes 
+            <button onClick={this.props.like} value={this.props.blog.id}>like</button><br/>
+            Added by {this.props.blog.user.name}
+          </div>
+        )
+    }}
+
     return (
         <div style={blogStyle}>
           <div onClick={this.toggleSelected}>

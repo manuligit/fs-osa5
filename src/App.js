@@ -135,20 +135,26 @@ class App extends React.Component {
     }
   }
 
+  deleteBlog() {
+    //delete blog lul
+    console.log("deleting")
+  }
+
   render() {
+    //console.log('render')
     //sort the list 
     this.state.blogs.sort(function (a, b) {
       return a.likes - b.likes
     }).reverse()
-
-
+    
     const blogList = () => (
+      
       <div>
         <h2>blogs</h2>
         {this.state.user.username} logged in
         <button type="button" onClick={this.logout}>logout</button>
         {this.state.blogs.map(blog => 
-          <div><Blog key={blog._id} blog={blog} like={this.addLike}/></div>
+          <div><Blog key={blog._id} blog={blog} like={this.addLike} delete={this.deleteBlog} currentUser={this.state.user.username}/></div>
         )}
 
         <CreateBlogForm title={this.state.title} author={this.state.author} url={this.state.url} 
