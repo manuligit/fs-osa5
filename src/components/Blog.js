@@ -8,7 +8,7 @@ class Blog extends React.Component {
   }
 
   toggleSelected = () => {
-    console.log("click")
+    //console.log(this.props.blog.id)
     this.setState({selected: !this.state.selected})
   }
 
@@ -20,20 +20,24 @@ class Blog extends React.Component {
       borderWidth: 1,
       marginBottom: 5
     }
-
-    if (this.state.selected) {
-      return (
-        <div style={blogStyle}>
-          <div onClick={this.toggleSelected}>
-            {this.props.blog.title} by {this.props.blog.author} </div>
-            <a href={this.props.blog.url}>{this.props.blog.url}</a><br/>
-          {this.props.blog.likes} likes 
-          <button type="submit">like</button> <br/>
-          Added by {this.props.blog.user.name}
-      </div>
-      )
+    if (!this.props.blog.user) { 
+      return ( null )
     }
-
+    //check for user just in case
+    if (this.props.blog.user) { 
+      if (this.state.selected) {
+        return (
+          <div style={blogStyle}>
+            <div onClick={this.toggleSelected}>
+              {this.props.blog.title} by {this.props.blog.author} </div>
+              <a href={this.props.blog.url}>{this.props.blog.url}</a><br/>
+            {this.props.blog.likes} likes 
+            <button onClick={this.props.like} value={this.props.blog.id}>like</button><br/>
+            Added by {this.props.blog.user.name}
+        </div>
+        )
+      }
+    }
     return (
         <div style={blogStyle}>
           <div onClick={this.toggleSelected}>
@@ -41,7 +45,9 @@ class Blog extends React.Component {
           </div>  
       </div>
     )
+
   }
+  
 }
 
 export default Blog

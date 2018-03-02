@@ -24,17 +24,17 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs })
-    )
-
+  async componentDidMount() {
+    const blogs = await blogService.getAll()
+    this.setState({ blogs: blogs})
+  
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({user})
       blogService.setToken(user.token)
     }
+    return Promise.resolve()
   } 
 
   handleFormFieldChange = (event) => {
@@ -109,7 +109,30 @@ class App extends React.Component {
     catch (error) {
       console.log(error.name)
     }
-    //console.log(response.data)
+  }
+
+  addLike = async (event) => {
+    event.preventDefault()
+    try {
+      const id = event.target.value
+      //get the original blog object
+      let blog = await blogService.getOne(id)
+      //copy it to add one to it's likes
+      const addedLike = {...blog, likes: blog.likes+1}
+      //update the object and blog list
+      await blogService.update(id, addedLike)
+      this.setState({
+        blogs: this.state.blogs.map(blog => blog.id !== id ? blog : addedLike)
+      })
+
+      this.setState({ message: `Liked ${blog.title} `})
+      setTimeout(() => {
+        this.setState({ message: null })
+      }, 5000)
+    }
+    catch (error) {
+      console.log(error)
+    }
   }
 
   render() {
@@ -120,7 +143,7 @@ class App extends React.Component {
         <button type="button" onClick={this.logout}>logout</button>
 
         {this.state.blogs.map(blog => 
-          <div><Blog key={blog._id} blog={blog}/></div>
+          <div><Blog key={blog._id} blog={blog} like={this.addLike}/></div>
         )}
 
         <CreateBlogForm title={this.state.title} author={this.state.author} url={this.state.url} 
