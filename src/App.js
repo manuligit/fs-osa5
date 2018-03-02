@@ -136,12 +136,17 @@ class App extends React.Component {
   }
 
   render() {
+    //sort the list 
+    this.state.blogs.sort(function (a, b) {
+      return a.likes - b.likes
+    }).reverse()
+
+
     const blogList = () => (
       <div>
         <h2>blogs</h2>
         {this.state.user.username} logged in
         <button type="button" onClick={this.logout}>logout</button>
-
         {this.state.blogs.map(blog => 
           <div><Blog key={blog._id} blog={blog} like={this.addLike}/></div>
         )}
