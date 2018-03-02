@@ -38,7 +38,8 @@ class Blog extends React.Component {
       if (this.state.selected) {
         //if the user is same as blogs adder, show the delete button:
         //use usernames because they are unique
-        if (this.props.blog.user.username === this.props.currentUser) {
+        if (this.props.blog.user.username === this.props.currentUser.username) {
+          //console.log(this.props.currentUser.token)
           return (
             <div style={blogStyle}>
               <div onClick={this.toggleSelected}>

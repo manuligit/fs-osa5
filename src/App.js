@@ -26,6 +26,11 @@ class App extends React.Component {
 
   async componentDidMount() {
     const blogs = await blogService.getAll()
+
+    blogs.sort(function (a, b) {
+      return a.likes - b.likes
+    }).reverse()
+
     this.setState({ blogs: blogs})
   
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -34,6 +39,8 @@ class App extends React.Component {
       this.setState({user})
       blogService.setToken(user.token)
     }
+
+
     return Promise.resolve()
   } 
 
@@ -123,8 +130,15 @@ class App extends React.Component {
       const addedLike = {...blog, likes: blog.likes+1}
       //update the object and blog list
       await blogService.update(id, addedLike)
+      let blogs = this.state.blogs.map(blog => blog.id !== id ? blog : addedLike)
+
+      blogs.sort(function (a, b) {
+        return a.likes - b.likes
+      }).reverse()
+
+
       this.setState({
-        blogs: this.state.blogs.map(blog => blog.id !== id ? blog : addedLike)
+        blogs: blogs
       })
 
       this.setState({ message: `Liked ${blog.title} `})
@@ -137,22 +151,43 @@ class App extends React.Component {
     }
   }
 
-  deleteBlog = (event) => {
+  deleteBlog = async (event) => {
     //delete blog lul
     const id = event.target.value
-    console.log("deleting", id)
+    console.log(this.state.blogs)
+    console.log(id)
+    console.log(this.state.user.token)
+    try {
+      let response = await blogService.remove(id, this.state.user.token)
+      console.log(response)
+      console.log("delete ok, creating blog list")
+      console.log("state blogs length", this.state.blogs.length)
+      let blogs = this.state.blogs.filter(blog => blog.id !== id)
+      console.log("current blogs length", blogs.length)
+      
+      blogs.sort(function (a, b) {
+        return a.likes - b.likes
+      }).reverse()
 
+      this.setState({
+        blogs: blogs
+      })
 
+      this.setState({ message: `Deleted blog `})
+      setTimeout(() => {
+        this.setState({ message: null })
+      }, 5000)
+
+    } catch (error) {
+      console.log('could not delete, error ' + error.name)
+    }
 
   }
 
   render() {
     //console.log('render')
     //sort the list 
-    this.state.blogs.sort(function (a, b) {
-      return a.likes - b.likes
-    }).reverse()
-    
+    //console.log(this.state.user)
     const blogList = () => (
       
       <div>
@@ -160,7 +195,7 @@ class App extends React.Component {
         {this.state.user.username} logged in
         <button type="button" onClick={this.logout}>logout</button>
         {this.state.blogs.map(blog => 
-          <div><Blog key={blog._id} blog={blog} like={this.addLike} delete={this.deleteBlog} currentUser={this.state.user.username}/></div>
+          <div><Blog key={blog._id} blog={blog} like={this.addLike} delete={this.deleteBlog} currentUser={this.state.user}/></div>
         )}
 
         <CreateBlogForm title={this.state.title} author={this.state.author} url={this.state.url} 
