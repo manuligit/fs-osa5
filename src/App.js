@@ -87,14 +87,17 @@ class App extends React.Component {
     let newBlog = {
       title: this.state.title,
       author: this.state.author,
-      url: this.state.url
+      url: this.state.url,
+      user: this.state.user
     }
     try { 
       blogService.create(newBlog)
+      let blogs = this.state.blogs.concat(newBlog)
       this.setState({ 
         author: '',
         title: '',
-        url: ''
+        url: '',
+        blogs: blogs
       })
 
       this.setState({ message: `${newBlog.title} created successfully` })
@@ -115,9 +118,9 @@ class App extends React.Component {
         <h2>blogs</h2>
         {this.state.user.username} logged in
         <button type="button" onClick={this.logout}>logout</button>
-        
+
         {this.state.blogs.map(blog => 
-          <Blog key={blog._id} blog={blog}/>
+          <div><Blog key={blog._id} blog={blog}/></div>
         )}
 
         <CreateBlogForm title={this.state.title} author={this.state.author} url={this.state.url} 
@@ -127,9 +130,6 @@ class App extends React.Component {
     )
 
     const loginForm = () => {
-      const hideWhenVisible = { display: this.state.loginVisible ? 'none' : '' }
-      const showWhenVisible = { display: this.state.loginVisible ? '' : 'none' }
-
       return (
         <Togglable buttonLabel="Login">
             <LoginForm login={this.login} 
