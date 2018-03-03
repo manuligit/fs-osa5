@@ -12,14 +12,14 @@ describe('<App />', () => {
     token: '1231231214',
     name: 'Teuvo Testaaja'
   }
-  
-  localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
 
   describe('when user is not logged', () => {
     beforeEach(() => {
       // luo sovellus siten, että käyttäjä ei ole kirjautuneena
       app = mount(<App />)
       app.setState({ user: null })
+      //remove item from local storage
+      localStorage.setItem('loggedBlogAppUser', JSON.stringify(null))
     })
 
     it('only login form is rendered', () => {
@@ -37,6 +37,7 @@ describe('<App />', () => {
     beforeEach(() => {
       // luo sovellus siten, että käyttäjä on kirjautuneena
       app.setState({ user: user })
+      localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     })
 
     it('blogs are rendered', () => {
