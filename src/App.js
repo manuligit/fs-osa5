@@ -194,8 +194,8 @@ class App extends React.Component {
         <h2>blogs</h2>
         {this.state.user.username} logged in
         <button type="button" onClick={this.logout}>logout</button>
-        {this.state.blogs.map(blog => 
-          <Blog key={blog._id} blog={blog} like={this.addLike} delete={this.deleteBlog} currentUser={this.state.user}/>
+        {this.state.blogs.map(blog => <div key={blog.id}>
+          <Blog blog={blog} like={this.addLike} delete={this.deleteBlog} currentUser={this.state.user}/></div>
         )}
 
         <CreateBlogForm title={this.state.title} author={this.state.author} url={this.state.url} 
