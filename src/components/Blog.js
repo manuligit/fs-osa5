@@ -1,10 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 class Blog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       selected: null
     }
+  }
+
+  static propTypes = {
+    currentUser: PropTypes.object.isRequired
   }
 
   toggleSelected = () => {
