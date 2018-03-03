@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import Blog from './Blog'
 
 describe('<Blog />', () => {
@@ -13,11 +13,11 @@ describe('<Blog />', () => {
       likes: 3,
       user: {username: 'joku', name: 'Joku Joukahainen'}
     }
+  let currentUser = {username: 'joku' }
 
   beforeEach(() => {
-    let currentUser = {username: 'joku' }
     let mockHandler = jest.fn()
-    blogComponent = shallow ( <Blog blog={blog} currentUser={currentUser}/> )
+    blogComponent = mount ( <Blog blog={blog} currentUser={currentUser}/> )
   })
 
 
