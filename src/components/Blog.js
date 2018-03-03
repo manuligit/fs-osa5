@@ -30,7 +30,7 @@ class Blog extends React.Component {
     if (!this.props.blog.user) {
       if (this.state.selected) {
         return (
-          <div style={blogStyle}>
+          <div style={blogStyle} className="blogContent">
             <div onClick={this.toggleSelected} className="togglableContent">
               {this.props.blog.title} by {this.props.blog.author} </div>
               <a href={this.props.blog.url}>{this.props.blog.url}</a><br/>
@@ -48,7 +48,7 @@ class Blog extends React.Component {
         if (this.props.blog.user.username === this.props.currentUser.username) {
           //console.log(this.props.currentUser.token)
           return (
-            <div style={blogStyle} >
+            <div style={blogStyle} className="blogContent">
               <div onClick={this.toggleSelected} className="togglableContent">
                 {this.props.blog.title} by {this.props.blog.author} 
               </div>
@@ -61,7 +61,7 @@ class Blog extends React.Component {
         }
         //else just show the content without delete button:
         return (
-          <div style={blogStyle}>
+          <div style={blogStyle} className="blogContent">
             <div onClick={this.toggleSelected} className="togglableContent">
               {this.props.blog.title} by {this.props.blog.author} 
             </div>
@@ -74,7 +74,7 @@ class Blog extends React.Component {
     }}
     //if nothing is selected, return just title and author
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className="blogContent">
         <div onClick={this.toggleSelected} className="togglableContent">
           {this.props.blog.title} by {this.props.blog.author}
         </div>  

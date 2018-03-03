@@ -5,8 +5,7 @@ import Blog from './Blog'
 describe('<Blog />', () => {
   let blogComponent
   //<Blog blog={blog} like={this.addLike} delete={this.deleteBlog} currentUser={this.state.user}/>
-  beforeEach(() => {
-    const blog = {
+  const blog = {
       id: 1,
       title: 'titteli',
       author: 'kirjoittaja',
@@ -15,9 +14,45 @@ describe('<Blog />', () => {
       user: {username: 'joku', name: 'Joku Joukahainen'}
     }
 
-    blogComponent = shallow ( <Blog blog={blog} /> )
-
-    
+  beforeEach(() => {
+    let currentUser = {username: 'joku' }
+    let mockHandler = jest.fn()
+    blogComponent = shallow ( <Blog blog={blog} currentUser={currentUser}/> )
   })
 
+
+  it('should only show title and author before toggling', () => {
+    //console.log(blogComponent.debug())
+    const contentDiv = blogComponent.find('.blogContent')
+    //
+    expect(contentDiv.text()).toContain(blog.title)
+    expect(contentDiv.text()).toContain(blog.author)
+    expect(contentDiv.text()).not.toContain(blog.likes)
+    expect(contentDiv.text()).not.toContain(blog.url)
+  })
+
+  it('should show all information after toggling', () => {
+    const clickableDiv = blogComponent.find('.togglableContent')
+    clickableDiv.simulate('click')
+
+    const contentDiv = blogComponent.find('.blogContent')
+    //console.log(blogComponent.debug())
+    //console.log(contentDiv.debug())
+    expect(contentDiv.text()).toContain(blog.title)
+    expect(contentDiv.text()).toContain(blog.author)
+    expect(contentDiv.text()).toContain(blog.likes)
+    expect(contentDiv.text()).toContain(blog.url)
+  })
+
+  it('should only show title and author after toggling twice', () => {
+    const clickableDiv = blogComponent.find('.togglableContent')
+    clickableDiv.simulate('click')
+    clickableDiv.simulate('click')
+
+    const contentDiv = blogComponent.find('.blogContent')
+    expect(contentDiv.text()).toContain(blog.title)
+    expect(contentDiv.text()).toContain(blog.author)
+    expect(contentDiv.text()).not.toContain(blog.likes)
+    expect(contentDiv.text()).not.toContain(blog.url)
+  })
 })
