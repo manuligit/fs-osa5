@@ -2,12 +2,34 @@ import React from 'react';
 
 
 class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      textValue: ''
+    }
+  }
+
   vote = (event) => {
     event.preventDefault()
-    console.log("voting")
+    //console.log("voting")
     let id = event.target.value
-    //console.log(id)
     this.props.store.dispatch({ type: 'VOTE', data: id })
+  }
+
+  addAnecdote = (event) => {
+    event.preventDefault()
+    //console.log("creating new anecdote")
+    let name = this.state.textValue
+    if (name) {
+      this.props.store.dispatch({ type: 'ADD', data: this.state.textValue })
+    } else {
+      console.log("not")
+    }
+  }
+
+  handleFormChange = (event) => {
+    event.preventDefault()
+    this.setState({ textValue: event.target.value })
   }
 
   render() {
@@ -31,9 +53,9 @@ class App extends React.Component {
           </div>
         )}
         <h2>create new</h2>
-        <form>
-          <div><input /></div>
-          <button>create</button> 
+        <form onSubmit={this.addAnecdote}>
+          <div><input type="text" name="value" onChange={this.handleFormChange} /></div>
+          <button type="submit">create</button> 
         </form>
       </div>
     )
