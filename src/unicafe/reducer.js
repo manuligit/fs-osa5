@@ -28,7 +28,8 @@ const counterReducer = (state = initialState, action) => {
   console.log(action)
   switch (action.type) {
     case 'GOOD':
-      let goodCounter = { ...state, good: state.good + 1, average: calculateAverage(state.good+1, state.bad, state.ok), 
+      let goodCounter = { ...state, good: state.good + 1, 
+                          average: calculateAverage(state.good+1, state.bad, state.ok), 
                           positive: calculatePositive(state.good+1, state.bad, state.ok) }
       return goodCounter
     case 'OK':
@@ -44,6 +45,8 @@ const counterReducer = (state = initialState, action) => {
     case 'ZERO':
       let zeroedCounter = { ...state, good: 0, ok: 0, bad: 0, average: 0, positive: 0 }
       return zeroedCounter
+    default:
+      return initialState
   }
   return state
 }

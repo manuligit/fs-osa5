@@ -5,9 +5,11 @@ class App extends React.Component {
   vote = (event) => {
     event.preventDefault()
     console.log("voting")
-    this.props.store.dispatch(
-      actionFor.importanceToggling(event.target.anecdote.id)
-    )
+    
+    
+    //this.props.store.dispatch(
+      //actionFor.importanceToggling(event.target.anecdote.id)
+    //)
   }
 
   render() {
@@ -22,7 +24,7 @@ class App extends React.Component {
             </div>
             <div>
               has {anecdote.votes}
-              <button onClick={this.vote}>vote</button>
+              <button onClick={this.vote} value={anecdote.id}>vote</button>
             </div>
           </div>
         )}

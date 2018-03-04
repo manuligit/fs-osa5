@@ -9,7 +9,7 @@ const store = createStore(reducer)
 const Statistiikka = () => {
   const palautteita = store.getState()
   
-  if (palautteita === 0) {
+  if (palautteita.good === 0 && palautteita.ok === 0 && palautteita.bad === 0) {
     return (
       <div>
         <h2>Statistiikka</h2>
