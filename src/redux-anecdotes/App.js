@@ -5,11 +5,9 @@ class App extends React.Component {
   vote = (event) => {
     event.preventDefault()
     console.log("voting")
-    
-    
-    //this.props.store.dispatch(
-      //actionFor.importanceToggling(event.target.anecdote.id)
-    //)
+    let id = event.target.value
+    //console.log(id)
+    this.props.store.dispatch({ type: 'VOTE', data: id })
   }
 
   render() {

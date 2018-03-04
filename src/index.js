@@ -1,3 +1,3 @@
 //import "./blogList"
-import './unicafe'
-//import './redux-anecdotes'
+//import './unicafe'
+import './redux-anecdotes'

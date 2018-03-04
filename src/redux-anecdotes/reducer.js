@@ -1,5 +1,3 @@
-import counterReducer from "../unicafe/reducer";
-
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -26,10 +24,14 @@ const reducer = (state = initialState, action) => {
   console.log('action', action)
   switch (action.type) {
     case 'VOTE':
-      let counter = {...state, votes: (state.votes + 1)}
-      return counter
+      const id = action.data
+      //console.log(id)
+      const anecdoteChange = state.find(n => n.id === id)
+      //console.log(anecdoteChange)
+      const changedAnecdote = { ...anecdoteChange, votes: anecdoteChange.votes+1 }
+      return state.map(item => item.id !== id ? item : changedAnecdote )  
     default:
-    return state
+      return state
   }
 }
 
