@@ -28,8 +28,8 @@ class App extends React.Component {
     const blogs = await blogService.getAll()
 
     blogs.sort(function (a, b) {
-      return a.likes - b.likes
-    }).reverse()
+      return a.likes < b.likes
+    })
 
     this.setState({ blogs: blogs})
   
@@ -133,8 +133,8 @@ class App extends React.Component {
       let blogs = this.state.blogs.map(blog => blog.id !== id ? blog : addedLike)
 
       blogs.sort(function (a, b) {
-        return a.likes - b.likes
-      }).reverse()
+        return a.likes < b.likes
+      })
 
 
       this.setState({
@@ -166,8 +166,8 @@ class App extends React.Component {
       console.log("current blogs length", blogs.length)
       
       blogs.sort(function (a, b) {
-        return a.likes - b.likes
-      }).reverse()
+        return a.likes < b.likes
+      })
 
       this.setState({
         blogs: blogs
